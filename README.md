@@ -312,5 +312,5 @@ UBUNTU_CODENAME=xenial
 
 Pour finir, je n'oublie pas de supprimer toutes les ressources de mon compte Azure, pour ne pas consommer davantage de crédit : 
 ````bash
-terraform destroy
+$ terraform destroy
 ````
