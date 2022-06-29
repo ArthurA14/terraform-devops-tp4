@@ -1,6 +1,4 @@
 
-
-
 ## DEVOPS - TP4 - Cloud - Terraform
 ## ARTHUR ALLIE - EFREI - M1 BDIA APP
 
@@ -308,9 +306,58 @@ BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
 VERSION_CODENAME=xenial
 UBUNTU_CODENAME=xenial
 ````
-*-> La connexion à ma VM Azure avec SSH, en utilisant l'adresse IP publique de ma VM, ainsi que ma private key, a bien fonctionné.*
+*-> La connexion à ma VM Azure avec SSH, en utilisant l'adresse IP publique de ma VM ainsi que ma private key, a bien fonctionné.*
 
 Pour finir, je n'oublie pas de supprimer toutes les ressources de mon compte Azure, pour ne pas consommer davantage de crédit : 
 ````bash
 $ terraform destroy
 ````
+
+---
+
+### 9. Différences notables entre les services Azure Container Instances (ACI) et le service Azure Virtual Machine (AVM) :
+
+#### a. Intérêt de l'utilisation de Terraform
+Terraform est un outil d'infrastructure as code (***IaC***) qui permet de gérer des configurations dans des fichiers ad hoc, modifiables et partageables. Tout ceci rend possible une automatisation et limite les erreurs ultérieures.
+De plus, Terraform peut gérer des composants de bas niveau comme des ressources de calcul, de stockage ou de réseau, mais aussi des composants de plus haut niveau comme les entrées DNS et les fonctionnalités SaaS.
+
+#### b. Différences notables entre ACI et AVM
+Une ***machine virtuelle*** nécessite l’installation d’un ***OS propre à l’intérieur de cette VM***. De plus, une machine virtuelle permet ***de combiner et d’utiliser plusieurs serveurs distants entre eux***. Ces serveurs exécutent différentes applications sur le serveur physique (machine) sur lequel la VM est installée, même si ces ***serveurs utilisent des OS différents***. Cela permet des économies non négligeables sur le hardware et les softwares de serveurs. En effet, ce qui fonctionnait auparavant sur plusieurs serveurs fonctionne désormais sur un seul et même serveur. Les machines virtuelles sont également le composant de la plupart des services cloud, comme AWS, Google Cloud Platform ou Azure. Cependant, comme une machine virtuelle ***encapsule un environnement informatique complet*** (serveur virtuel), la quantité de CPU et de RAM requises pour cette ressource devient rapidement lourde et ***limite grandement le nombre de machines virtuelles pouvant exister sur un seul serveur***.
+
+En ce qui concerne les ***conteneurs***, ceux-ci se sont progressivement imposés comme la ***norme en termes de virtualisation d’environnements***. Ils ont en effet répondu à la demande croissante en termes de quantité de ressources consommées par les machines virtuelles, induites notamment par le contexte Big Data ( nécessité de « scaler » horizontalement). Étant donné qu’un conteneur ***fonctionne sur l’OS d'une machine/serveur***, il ***partage cette unique instance d’OS ainsi que des librairies et d'autres installations, de sorte que ce conteneur a seulement besoin d'inclure que le code ou une partie du code d’une application***, (qu’il s’agisse d’une application unique ou de plusieurs microservices). Il s’agit d’une ***isolation du point de vue du code et de l'application*** (qui ne dépendent pas du conteneur utilisé, i.e. de ses librairies, de sa configuration, de ses installations). Ces applications/microservices peuvent être regroupées dans un ou plusieurs conteneurs.
+
+Ainsi, tandis que les ***machines virtuelles*** permettent de combiner ***plusieurs serveurs, qui exécutent plusieurs applications, sur un seul serveur matériel***, ***quels que soient leurs systèmes d'exploitation***, les ***conteneurs offrent une virtualisation d'applications plus légère*** et la possibilité de basculer rapidement d’un conteneur à un autre (***reprise***) en cas de chute d’un conteneur. Cela permet aussi de ***sécuriser l’application déployée sur le/les conteneur(s)*** , car celle-ci est séparée sur plusieurs conteneurs. Cela est rendu possible car chaque conteneur est isolé, d’un point de vue code et ressources, des autres conteneurs.
+
+#### c. Avantages de la machine virtuelle :
+- La machine virtuelle permet d'exécuter différentes applications, nécessitant différents systèmes d'exploitation, sur une seule et même infrastructure.
+
+- La machine virtuelle simule un environnement de travail complet, des librairies, exécutables, et langages, jusqu’aux ressources du système d'exploitation.
+
+- La machine virtuelle simplifie la portabilité et la migration entre celles installées sur des ordinateurs physiques de l’entreprise, et celles déployées sur plateformes cloud.
+
+#### d. Inconvénients de la machine virtuelle :
+- Les images d’une machine virtuelle sont très gourmandes en ressources ; elles consomment en règle générale des GB d’espace sur disque. Cela induit un temps plus long lors de sauvegardes ou de migrations entre les plateformes cloud sur lesquelles plusieurs VM seraient interconnectées.
+
+- Un serveur physique encapsule la totalité des ressources qui sont présentes sur celui-ci, y compris les OS, et donc également chaque OS présent dans chaque machine virtuelle. Par conséquent, un serveur physique peut prendre en charge moins de machines virtuelles que de conteneurs.
+
+- Le temps de démarrage de la machine virtuelle peut prendre plusieurs minutes.
+
+#### e. Avantages du conteneur :
+- Un conteneur est plus léger qu’une machine virtuelle : l’ordre de grandeur de ses images est le MB, contrairement au GB dans le cas d’une machine virtuelle.
+
+- Un conteneur nécessite moins de ressources informatiques (gpu, cpu, etc.) pour être déployé, exécuté et géré qu’une machine virtuelle.
+
+- Comme l’ordre de grandeur de l'espace qu'occupe un conteneur sur une machine est inférieur à celui d’une VM, un seul et unique serveur peut héberger beaucoup plus de conteneurs que de machines virtuelles.
+
+- Le temps de démarrage d’un conteneur est de quelques millisecondes.
+
+#### f. Inconvénients du conteneur :
+- Tous les conteneurs se doivent impérativement de fonctionner sur le même système d'exploitation ; il n’existe pas de mélange et de correspondance entre différents OS ou différentes versions d’un même OS.
+
+- Un conteneur est par définition moins sécurisé qu’une machine virtuelle, puisque l’OS utilisé est celui de la machine sur laquelle est hébergée le conteneur, il est donc partagé.
+
+- Le conteneur est une technologie plus récente (Docker ne date par exemple que de 2013, Kubernetes que de 2015) et cet écosystème continue d'évoluer.
+
+#### g. Comparatif financier entre ACI et AVM : 
+
+A serveur équivalent, l’Azure Container Instances est plus cher que l’Azure Virtual Machine. Cependant, il est bien plus léger à configurer et à maintenir.
