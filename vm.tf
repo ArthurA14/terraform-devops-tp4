@@ -12,7 +12,7 @@
 #     # address_prefixes = ["10.0.1.0/24"] 
 # }
 
-# 5. Define a New Public IP Address
+# Define a New Public IP Address
 resource "azurerm_public_ip" "tp4ip" { 
     name = "myIp1" 
     location = var.region
@@ -21,7 +21,7 @@ resource "azurerm_public_ip" "tp4ip" {
     sku = "Basic" 
 } 
 
-# 6. Define a Network Interface for our VM
+# Define a Network Interface for our VM
 resource "azurerm_network_interface" "tp4nic" { 
     name = "tp4-nic" 
     location = var.region
@@ -35,7 +35,7 @@ resource "azurerm_network_interface" "tp4nic" {
     } 
 } 
 
-# 7. Define the Virtual Machine
+# Define the Virtual Machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" { 
     name = "devops-20210311"   
     location = var.region
