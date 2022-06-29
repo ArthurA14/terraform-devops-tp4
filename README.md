@@ -2,6 +2,8 @@
 ## DEVOPS - TP4 - Cloud - Terraform
 ## ARTHUR ALLIE - EFREI - M1 BDIA APP
 
+![logo_terraform](https://img-0.journaldunet.com/5dyx1x7c8hipe3JS92vWnli_LIc=/1500x/smart/f628d3865a7f4ba4ab1f125beba18a58/ccmcms-jdn/19946149.jpg)
+
 ### Rappel des objectifs de ce TP : 
 - Créer une machine virtuelle Azure (VM) avec une adresse IP publique
 - Utiliser Terraform
