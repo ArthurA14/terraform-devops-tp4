@@ -2,7 +2,7 @@ data "azurerm_resource_group" "tp4" {
     name = "devops-TP2"
 }
 
-# 4. Use already defined Virtual Network and Subnet
+# Use already defined Virtual Network and Subnet
 data "azurerm_virtual_network" "tp4" { 
     name = "example-network" 
     # location = var.region
